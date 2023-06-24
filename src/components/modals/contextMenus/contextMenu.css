@@ -1,0 +1,19 @@
+.desktop-contextmodal{
+    width:12em;
+    background-color: rgba(0, 0, 0, 0.750);
+    position: fixed;
+    display:flex;
+    flex-direction: column;
+    color:rgba(255, 255, 255, 0.48);
+}
+
+.contextmodal-items{
+    margin:0.5em 1em;
+    cursor: pointer;
+}
+
+.desktop-contextmodal > hr{
+    width: 97%;
+    border-color: rgba(255, 255, 255, 0.48);
+    border-style: solid;
+}

@@ -1,0 +1,66 @@
+.folder-explorer-window{
+    min-width:20em;
+    min-height: 18em;
+    background-color: rgba(16, 11, 11, 0.8);
+    position: fixed;
+    resize: both;
+    overflow: auto;
+    display:flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.window-header{
+    padding:0.5em 0.5em;
+    background-color: black;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 0.7em;
+}
+.window-display-ctrl{
+    display:flex;
+    flex-direction: row;
+    padding-left: 1em;
+    align-items: center;
+    column-gap: 0.7em;
+}
+
+.window-display-ctrl > .close{
+    width:15px;
+    height:15px;
+    background-color: #EF476F;
+    transition: 0.2s;
+}
+
+.window-display-ctrl > .close:hover,
+.window-display-ctrl > .minimize:hover,
+.window-display-ctrl > .maximize:hover
+{
+    opacity: 0.7;
+}
+
+.window-display-ctrl > .minimize{
+    width: 15px;
+    height: 15px;
+    background-color: #ffd166;
+    transition: 0.2s;
+}
+
+.window-display-ctrl > .maximize{
+    width:15px;
+    height:15px;
+    background-color: #06D6A0;
+    transition: 0.2s;
+}
+
+.editor-space{
+    display: flex;
+    flex-direction: column;
+    height:inherit;
+    background-color: rgb(26, 27, 38);
+    overflow-y: scroll;
+}
+.codemirror{
+    height: 100%;
+}
