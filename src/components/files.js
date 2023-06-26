@@ -1,19 +1,28 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilStateLoadable } from "recoil";
 import { addWindow } from "../recoil/atom/windowsAtom";
 import { filesAtom } from "../recoil/atom/design/filesAtom";
 import { addFile,filesDataAtom } from "../recoil/atom/data/filesModal";
+import { contextMenuAtom } from "../recoil/atom/design/contextMenuAtom";
 
 const File = (props)=>{
 
     const [filesState,setFilesState] = useRecoilState(filesAtom);
     const [filesDataState,setFilesDataState] = useRecoilState(filesDataAtom);
 
+    const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
+
     const handleContextMenu = (e)=>{
         e.preventDefault();
         e.stopPropagation();
-        props.setContextMenuConfig({top:e.pageY,left:e.pageX});
-        props.setContextMenuType(1);
-        props.setShowContextMenu(true);
+        
+        setContextMenu({
+            coordinates:{
+                top:e.pageY,
+                left:e.pageX,
+            },
+            type:"FILE",
+            path: props.data.path,
+        });
 
     }
 
@@ -40,7 +49,11 @@ const File = (props)=>{
     return(
         <div className='folder' onContextMenu={handleContextMenu} onDoubleClick={handleDoubleClick}>
             <img style={style} className='folder-icon' src={require("../assets/images/fileIcon.jpg")}></img>
-            <div className="folder-name">{props.name}</div>
+            <div className="folder-name" title={props.name}>
+                {
+                    props.name.length > 10 ? props.name.substring(0,10)+"..." : props.name
+                }
+            </div>
         </div>
     );
 }

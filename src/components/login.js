@@ -17,7 +17,7 @@ const Login = ()=>{
     useEffect(()=>{
 
         socket.on("askcredentials",(value)=>{
-            socket.emit("loginRequest",
+            socket.emit("login_request",
                 {
                     username:credentailRef.username,
                     password:credentailRef.password

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 
 // components
 import Folder from './folder';
@@ -18,6 +18,8 @@ import { foldersListAtom } from '../recoil/atom/design/foldersAtom';
 
 import { socket } from '../socket/socket';
 import { useNavigate } from 'react-router';
+import { folderDataAtom,addFolder, updatedChildren } from '../recoil/atom/data/foldersModal';
+import { contextMenuAtom } from '../recoil/atom/design/contextMenuAtom';
 
 const Desktop = ()=>{
 
@@ -26,14 +28,16 @@ const Desktop = ()=>{
     
     // states for contextmenu
     const [contextMenuConfig,setContextMenuConfig] = useState(null);
-    const [showContextMenu,setShowContextMenu] = useState(false);
-    const [contextMenuType,setContextMenuType] = useState(0);
     // end for contextmenu
 
-    //recoil state for folder data
-    const [folderList,setFolderList] = useRecoilState(foldersListAtom);
-    //recoil state for file data
-    const [fileList,setFileList] = useRecoilState(filesListAtom);
+    const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
+
+
+    const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
+
+    const [desktopPath,setDesktopPath] = useState(null);
+    const ref = useRef();
+    ref.desktopPath = desktopPath;
 
     useEffect(()=>{
         if(!socket.connected){
@@ -45,74 +49,99 @@ const Desktop = ()=>{
             navigate("/login");
         });
 
-        socket.on("iconListResponse",(data)=>{
+        socket.on("load_desktop_response",(payload)=>{
+            const data = payload.data;
+            setDesktopPath(data.path);
+            
+            if(!Object.keys(folderDataState).includes(data.path)){
+                addFolder(data.path,{children:[],data:{
+                    name:"Desktop",
+                    path:data.path,
+                    type:"FOLDER"
+                }},setFolderDataState);
+            }
 
-            setFolderList(data.folders);
-            setFileList(data.files);
+            updatedChildren(data.path,[
+                ...data.FOLDERS,
+                ...data.FILES,
+            ],
+            setFolderDataState);
+        });
 
-        })
-
-        socket.emit("iconListRequest",{path:"desktop"});
+        socket.on("load_dir_response",(payload)=>{
+            updatedChildren(payload.path,[
+                ...payload.data.FOLDERS,
+                ...payload.data.FILES,
+            ],setFolderDataState);
+        });
 
         return ()=>{
+            socket.off("load_desktop_response");
             socket.off("disconnect");
         }
+    },[]);
+
+    useEffect(()=>{
+        socket.emit("load_desktop_request",{path:"desktop"});
     },[]);
 
 
     const handleContextMenu = (e)=>{
         e.preventDefault();
-        setContextMenuConfig({top:e.pageY,left:e.pageX});
-        setContextMenuType(0);
-        setShowContextMenu(true);
+        // setContextMenuConfig({top:e.pageY,left:e.pageX});
+        // setContextMenuType(0);
+        setContextMenu({
+            coordinates:{
+                top:e.pageY,
+                left:e.pageX,
+            },
+            type: "EXPLORER",
+            path: ref.desktopPath,
+        });
     }
 
     const handleContextMenuDisplay = ()=>{
-        switch(contextMenuType){
-            case 0 : return <DesktopContextMenu config={contextMenuConfig} />;
-            case 1 : return <FolderContextMenu config={contextMenuConfig} />;
+        switch(contextMenu.type){
+            case "EXPLORER" : return <DesktopContextMenu path={desktopPath} />;
+            case "FILE" : return <FolderContextMenu />;
         }
     }
 
     const handleClick = (e)=>{
-        if(!showContextMenu) return;
-        setShowContextMenu(false);
+        if(contextMenu) setContextMenu(null);
     }
 
     return(
         <div className="desktop" onContextMenu={handleContextMenu} onClick={handleClick}>
-            {
-                showContextMenu && handleContextMenuDisplay()
-            }
-
 
             <div className="folders-container">
+            {
+                    folderDataState[desktopPath]?.children.map((child,index)=>{
 
-                {
-                    folderList.map((folder,index)=>{
-                        return <Folder 
-                            key={index}
-                            name={folder} 
-                            setContextMenuConfig={setContextMenuConfig} 
-                            setShowContextMenu={setShowContextMenu} 
-                            setContextMenuType={setContextMenuType}
-                        />
-                    })
-                }
-                {
-                    fileList.map((file,index)=>{
-                        return <File 
-                            key={index} 
-                            name={file}
-                            setContextMenuConfig={setContextMenuConfig}
-                            setShowContextMenu={setShowContextMenu}
-                            setContextMenuType={setContextMenuType}
-                        />
+                        if(child.type == "FOLDER")
+                        return (
+                            <Folder 
+                                key={child.name} 
+                                name={child.name}
+                                data={child}
+                               
+                            />
+                            );
+                            else return (
+                                <File 
+                                    key={child.name}  
+                                    name={child.name}
+                                    data={child}
+                                />
+                            );
                     })
                 }
                 <WindowManager/>
                 <Sidebar/>
             </div>
+            {
+                contextMenu && handleContextMenuDisplay()
+            }
         </div>
     );
 }

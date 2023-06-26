@@ -6,21 +6,59 @@ import { useRecoilState } from "recoil";
 import { updatedChildren,folderDataAtom } from "../../../recoil/atom/data/foldersModal";
 import { useEffect } from "react";
 
+import { socket } from "../../../socket/socket";
+import { contextMenuAtom } from "../../../recoil/atom/design/contextMenuAtom";
+
 const FolderExplorer = (props)=>{
     
     const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
+
+    const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
 
     const style={
         width:"3.5em",
     };
 
     useEffect(()=>{
-        const newchildren = [...folderDataState[props.id].children,{type:"FOLDER",name:"Test"}];
-        updatedChildren(props.id,newchildren,setFolderDataState);
+        socket.on("load_dir_response",(payload)=>{
+            updatedChildren(payload.path,
+                [
+                    ...payload.data.FOLDERS,
+                    ...payload.data.FILES,
+                ],
+                setFolderDataState);
+        });
+        return ()=>{
+            socket.off("load_dir_response");
+        }
     },[]);
 
+    useEffect(()=>{
+        
+        socket.emit("load_dir_request",{path:folderDataState[props.id].data.path});
+
+    },[]);
+
+    const handleContextMenu = (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        
+        setContextMenu({
+            coordinates:{
+                top:e.pageY,
+                left:e.pageX,
+            },
+            type: "EXPLORER",
+            path: props.id,
+        });
+    }
+
+    const handleClick = ()=>{
+        if(contextMenu) setContextMenu(null);
+    }
+
     return (
-        <div className="folder-explorer">
+        <div className="folder-explorer" onContextMenu={handleContextMenu} onClick={handleClick}>
             <div className="folder-explorer-navigation">
                 <div className="folder-explorer-navigation-item">Home</div>
                 <div className="folder-explorer-navigation-item">Desktop</div>
@@ -32,7 +70,12 @@ const FolderExplorer = (props)=>{
                     folderDataState[props.id].children.map( child=>{
                         if(child.type == "FOLDER")
                         return (
-                            <Folder key={child.name} width={style.width} name={child.name}/>
+                            <Folder 
+                                key={child.name} 
+                                width={style.width}
+                                name={child.name}
+                                data={child}
+                            />
                             );
                             else return (
                                 <File key={child.name} width={style.width} name={child.name}/>

@@ -5,12 +5,17 @@ import Window from "./window";
 import { filesAtom } from "../../../recoil/atom/design/filesAtom";
 import { foldersAtom } from "../../../recoil/atom/design/foldersAtom";
 import { terminalsAtom } from "../../../recoil/atom/design/terminalAtom";
+import { useEffect } from "react";
 
 const WindowManager = (props)=>{
 
     const [foldersState,setFoldersState] = useRecoilState(foldersAtom);
     const [filesState,setFilesState] = useRecoilState(filesAtom);
     const [terminalsState,setTerminalsState] = useRecoilState(terminalsAtom);
+
+    // useEffect(()=>{
+    //     console.log(foldersState);
+    // });
 
     const handleDisplay = ()=>{
         const windows = [];
@@ -25,7 +30,7 @@ const WindowManager = (props)=>{
 
                 windows.push(
                     <Window 
-                        id={key} 
+                        id={key}
                         key={key} 
                         displayConfig={displayConfig} 
                         displayState={displayState} 

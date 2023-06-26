@@ -2,17 +2,27 @@ import { useRecoilState } from "recoil";
 
 import { addWindow } from "../../recoil/atom/windowsAtom";
 import { foldersAtom } from "../../recoil/atom/design/foldersAtom";
+import { folderDataAtom,addFolder } from "../../recoil/atom/data/foldersModal";
 
 const FolderItem = (props)=>{
 
     const [foldersState,setFoldersState] = useRecoilState(foldersAtom);
+    const [foldersDataState,setFolderDataState] = useRecoilState(folderDataAtom);
 
 
     const handleClick = (e)=>{
         const displayConfig = foldersState.newConfigs;
         const displayState = "DEFAULT";
         const contentType = "FOLDER";
-        addWindow("Home",{displayConfig,displayState,contentType},setFoldersState);
+        addFolder( "C:\\",{ 
+            children:[],
+            data:{
+                path:"C:\\",
+                name:"C:",
+                type:"FOLDER"
+            },
+        },setFolderDataState);
+        addWindow("C:\\",{displayConfig,displayState,contentType},setFoldersState);
     }
 
     const handleRunningWinDisplay = ()=>{

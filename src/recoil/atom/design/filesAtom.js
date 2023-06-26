@@ -1,14 +1,28 @@
 import {atom} from 'recoil';
-
 /*
-schema: [ String ]
+
+schema: [ 
+    {
+        'path':String,
+        'name':String,
+    }
+]
+
 */ 
 
 export const filesListAtom = atom({
     key:"filesListState",
     default:[
-        "music.txt",
-        "script.py",
+        {
+            'path':"Desktop",
+            'name':"music.txt",
+            'type':"FILE",
+        },
+        {
+            'path':"Desktop",
+            'name':"script.py",
+            'type':"FILE",
+        },
     ],
 });
 

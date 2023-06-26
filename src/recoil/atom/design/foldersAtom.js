@@ -2,16 +2,33 @@ import { atom } from "recoil";
 
 /*
 
-schema: [ String ]
+schema: [ 
+    {
+        'path':String,
+        'name':String,
+    }
+]
 
 */ 
 
 export const foldersListAtom = atom({
     key:"folderListState",
     default:[
-        "Games",
-        "Daiict",
-        "Programes",
+        {
+            'path':"Desktop",
+            'name':"Games",
+            'type':"FOLDER",
+        },
+        {
+            'path':"Desktop",
+            'name':"Daiict",
+            'type':"FOLDER",
+        },
+        {
+            'path':"Desktop",
+            'name':"Programes",
+            'type':"FOLDER",
+        }
     ],
 }); 
 

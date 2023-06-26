@@ -13,6 +13,8 @@ import { filesAtom } from "../../../recoil/atom/design/filesAtom";
 import { foldersAtom } from "../../../recoil/atom/design/foldersAtom";
 import { terminalsAtom } from "../../../recoil/atom/design/terminalAtom";
 
+import { folderDataAtom } from "../../../recoil/atom/data/foldersModal";
+
 
 const Window = (props)=>{
 
@@ -23,6 +25,8 @@ const Window = (props)=>{
     const [foldersState,setFoldersState] = useRecoilState(foldersAtom);
     const [filesState,setFilesState] = useRecoilState(filesAtom);
     const [terminalsState,setTerminalsState] = useRecoilState(terminalsAtom);
+
+    const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
 
     const defaultStyle = {
         top:props.displayConfig.top,
@@ -106,15 +110,12 @@ const Window = (props)=>{
 
     const handleContent = ()=>{
         switch(props.contentType){
-            case "FOLDER" : return <FolderExplorer id={props.id} displayState={props.displayState}/>;
+            case "FOLDER" :
+                return <FolderExplorer id={props.id} displayState={props.displayState}/>;
             case "FILE" : return <Editor id={props.id} />;
             case "TERMINAL" : return <Terminal id={props.id} displayState={props.displayState}/>;
         }
     }
-    
-    useEffect(()=>{
-        
-    },[]);
 
     return (
         <div className="folder-explorer-window" 
@@ -130,7 +131,7 @@ const Window = (props)=>{
                     <div className="minimize" onClick={handleDisplayStateToDown}></div>
                     <div className="maximize" onClick={handleDisplayStateToUP}></div>
                 </div>
-                <div style={{color:"white"}}>{props.id}</div>
+                <div style={{color:"white"}}>{folderDataState[props.id].data.name}</div>
             </div>
             {handleContent()}
         </div>
