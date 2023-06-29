@@ -28,7 +28,7 @@ const EditorItem = (props)=>{
     }
 
     return (
-        <div className='sidebar-item' onClick={handleClick}>
+        <div className='sidebar-item' title="Editor" onClick={handleClick}>
 
             <div className="sidebar-win-running">
                 {
@@ -37,7 +37,7 @@ const EditorItem = (props)=>{
             </div>
 
             <img className="sidebar-item-icon" src = {require("../../assets/images/textEditorIcon.png")}></img>
-            <div className="sidebar-item-name">Edit</div>
+            {/* <div className="sidebar-item-name">Edit</div> */}
             {
                 (Object.keys(filesState.windows).length !== 0) && (<div className="sidebar-item-active-container">
                     <div></div>

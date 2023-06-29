@@ -13,6 +13,7 @@ const Folder = (props)=>{
     const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
 
     const handleContextMenu = (e)=>{
+        console.log(props.data);
         e.preventDefault();
         e.stopPropagation();
         
@@ -22,6 +23,7 @@ const Folder = (props)=>{
                 left:e.pageX,
             },
             type: "FILE",
+            isFile:false,
             path: props.data.path,
         });
 

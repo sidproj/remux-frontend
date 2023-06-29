@@ -9,7 +9,7 @@ const DesktopContextMenu = (props)=>{
 
     const handleCreateNewFolder = (isFile)=>{
         socket.emit("add_item_to_path_request",{
-            path:props.path,
+            path:contextMenu.path,
             isFile:isFile,
             name:isFile?"untitled.txt":"New Folder",
         });
@@ -19,6 +19,10 @@ const DesktopContextMenu = (props)=>{
         top:contextMenu.coordinates.top,
         left:contextMenu.coordinates.left,
     };
+
+    useEffect(()=>{
+        console.log(contextMenu);
+    },[]);
 
 
     return (

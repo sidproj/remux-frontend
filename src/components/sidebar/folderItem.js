@@ -14,15 +14,15 @@ const FolderItem = (props)=>{
         const displayConfig = foldersState.newConfigs;
         const displayState = "DEFAULT";
         const contentType = "FOLDER";
-        addFolder( "C:\\",{ 
+        addFolder( "/home",{ 
             children:[],
             data:{
-                path:"C:\\",
-                name:"C:",
+                path:"/home",
+                name:"/home",
                 type:"FOLDER"
             },
         },setFolderDataState);
-        addWindow("C:\\",{displayConfig,displayState,contentType},setFoldersState);
+        addWindow("/home",{displayConfig,displayState,contentType},setFoldersState);
     }
 
     const handleRunningWinDisplay = ()=>{
@@ -36,7 +36,7 @@ const FolderItem = (props)=>{
     }
 
     return (
-        <div className='sidebar-item' onClick={handleClick}>
+        <div className='sidebar-item' title="Files" onClick={handleClick}>
 
             <div className="sidebar-win-running">
                 {
@@ -45,7 +45,7 @@ const FolderItem = (props)=>{
             </div>            
 
             <img className="sidebar-item-icon" src = {require("../../assets/images/folderIcon-light.png")}></img>
-            <div className="sidebar-item-name">Folder</div>
+            {/* <div className="sidebar-item-name">Folder</div> */}
             {
                 (Object.keys(foldersState.windows).length !== 0) && (<div className="sidebar-item-active-container">
                     <div></div>

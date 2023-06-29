@@ -14,6 +14,8 @@ import { foldersAtom } from "../../../recoil/atom/design/foldersAtom";
 import { terminalsAtom } from "../../../recoil/atom/design/terminalAtom";
 
 import { folderDataAtom } from "../../../recoil/atom/data/foldersModal";
+import { filesDataAtom } from "../../../recoil/atom/data/filesModal";
+import { removeTerminal,terminalsDataAtom } from "../../../recoil/atom/data/terminalModal";
 
 
 const Window = (props)=>{
@@ -27,6 +29,8 @@ const Window = (props)=>{
     const [terminalsState,setTerminalsState] = useRecoilState(terminalsAtom);
 
     const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
+    const [filesDataState,setFilesDataState] = useRecoilState(filesDataAtom);
+    const [terminalsDataState,setTerminalsDataState] = useRecoilState(terminalsDataAtom);
 
     const defaultStyle = {
         top:props.displayConfig.top,
@@ -87,11 +91,15 @@ const Window = (props)=>{
     }
 
     //close any window
-    const handleClose = (e) =>{
+    const handleClose = () =>{
         switch(props.contentType){
             case "FILE":removeWindow(props.id,setFilesState);break;
             case "FOLDER": removeWindow(props.id,setFoldersState);break;
-            case "TERMINAL": removeWindow(props.id,setTerminalsState);break;
+            case "TERMINAL": {
+                removeTerminal(props.id,setTerminalsDataState);
+                removeWindow(props.id,setTerminalsState);
+                break;
+            }
         }
     }
 
@@ -113,7 +121,7 @@ const Window = (props)=>{
             case "FOLDER" :
                 return <FolderExplorer id={props.id} displayState={props.displayState}/>;
             case "FILE" : return <Editor id={props.id} />;
-            case "TERMINAL" : return <Terminal id={props.id} displayState={props.displayState}/>;
+            case "TERMINAL" : return <Terminal id={props.id} exit={handleClose} displayState={props.displayState}/>;
         }
     }
 
@@ -131,7 +139,11 @@ const Window = (props)=>{
                     <div className="minimize" onClick={handleDisplayStateToDown}></div>
                     <div className="maximize" onClick={handleDisplayStateToUP}></div>
                 </div>
-                <div style={{color:"white"}}>{folderDataState[props.id].data.name}</div>
+                <div style={{color:"white"}}>
+                    {
+                        props.id
+                    }
+                </div>
             </div>
             {handleContent()}
         </div>

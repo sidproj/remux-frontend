@@ -21,9 +21,9 @@ const File = (props)=>{
                 left:e.pageX,
             },
             type:"FILE",
+            isFile:true,
             path: props.data.path,
         });
-
     }
 
     const handleDoubleClick = (e)=>{
@@ -34,11 +34,11 @@ const File = (props)=>{
         
         //add file data to filesData state
         if(!Object.keys(filesDataState).includes(props.name)){
-            addFile(props.name,{text:`const msg = 'Hello world!';`},setFilesDataState);
+            addFile(props.data.path,{},setFilesDataState);
         }
 
         //add filename and props to windows state for files
-        addWindow(props.name,{displayConfig,displayState,contentType},setFilesState);
+        addWindow(props.data.path,{displayConfig,displayState,contentType},setFilesState);
 
     }
 
