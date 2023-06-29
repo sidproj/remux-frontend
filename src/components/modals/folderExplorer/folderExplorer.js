@@ -28,13 +28,10 @@ const FolderExplorer = (props)=>{
                 ],
                 setFolderDataState);
         });
-        return ()=>{
-            socket.off("load_dir_response");
-        }
     },[]);
 
     useEffect(()=>{
-        
+        console.log(props.id);
         socket.emit("load_dir_request",{path:folderDataState[props.id].data.path});
 
     },[]);
@@ -78,7 +75,12 @@ const FolderExplorer = (props)=>{
                             />
                             );
                             else return (
-                                <File key={child.name} width={style.width} name={child.name}/>
+                                <File 
+                                    key={child.name} 
+                                    width={style.width} 
+                                    name={child.name}
+                                    data={child}
+                                />
                                 );
                     } )
                 }

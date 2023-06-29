@@ -20,6 +20,8 @@ import { socket } from '../socket/socket';
 import { useNavigate } from 'react-router';
 import { folderDataAtom,addFolder, updatedChildren } from '../recoil/atom/data/foldersModal';
 import { contextMenuAtom } from '../recoil/atom/design/contextMenuAtom';
+import RenameModal from './modals/inturuptsModals/renameModal';
+import { renameModalAtom } from '../recoil/atom/modals/renameModalAtom';
 
 const Desktop = ()=>{
 
@@ -32,6 +34,7 @@ const Desktop = ()=>{
 
     const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
 
+    const [renameModal,setRenameModal] = useRecoilState(renameModalAtom)
 
     const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
 
@@ -51,6 +54,7 @@ const Desktop = ()=>{
 
         socket.on("load_desktop_response",(payload)=>{
             const data = payload.data;
+            console.log(payload);
             setDesktopPath(data.path);
             
             if(!Object.keys(folderDataState).includes(data.path)){
@@ -69,6 +73,7 @@ const Desktop = ()=>{
         });
 
         socket.on("load_dir_response",(payload)=>{
+            console.log(payload);
             updatedChildren(payload.path,[
                 ...payload.data.FOLDERS,
                 ...payload.data.FILES,
@@ -102,7 +107,7 @@ const Desktop = ()=>{
 
     const handleContextMenuDisplay = ()=>{
         switch(contextMenu.type){
-            case "EXPLORER" : return <DesktopContextMenu path={desktopPath} />;
+            case "EXPLORER" : return <DesktopContextMenu path={ref.desktopPath} />;
             case "FILE" : return <FolderContextMenu />;
         }
     }
@@ -116,7 +121,7 @@ const Desktop = ()=>{
 
             <div className="folders-container">
             {
-                    folderDataState[desktopPath]?.children.map((child,index)=>{
+                    folderDataState[ref.desktopPath]?.children.map((child,index)=>{
 
                         if(child.type == "FOLDER")
                         return (
@@ -140,7 +145,11 @@ const Desktop = ()=>{
                 <Sidebar/>
             </div>
             {
-                contextMenu && handleContextMenuDisplay()
+                contextMenu &&
+                handleContextMenuDisplay()
+            }
+            {
+                renameModal && <RenameModal/>
             }
         </div>
     );

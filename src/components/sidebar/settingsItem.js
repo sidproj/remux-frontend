@@ -28,7 +28,7 @@ const SetingsItem = (props)=>{
     }
 
     return (
-        <div className='sidebar-item' onClick={handleClick}>
+        <div className='sidebar-item' title="Settings" onClick={handleClick}>
 
             <div className="sidebar-win-running">
                 {
@@ -37,7 +37,7 @@ const SetingsItem = (props)=>{
             </div>
 
             <img className="sidebar-item-icon" src = {require("../../assets/images/settingIcon.png")}></img>
-            <div className="sidebar-item-name">Settings</div>
+            {/* <div className="sidebar-item-name">Settings</div> */}
             {
                 (Object.keys(filesState.windows).length !== 0) && (<div className="sidebar-item-active-container">
                     <div></div>

@@ -80,7 +80,7 @@ const WindowManager = (props)=>{
                 windows.push(
                     <Window 
                         id={key} 
-                        key={key} 
+                        key={key}
                         displayConfig={displayConfig} 
                         displayState={displayState} 
                         history={history}
