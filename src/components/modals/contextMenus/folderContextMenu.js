@@ -5,6 +5,7 @@ import { addFolder, folderDataAtom } from '../../../recoil/atom/data/foldersModa
 import { contextMenuAtom } from '../../../recoil/atom/design/contextMenuAtom';
 import { filesAtom } from '../../../recoil/atom/design/filesAtom';
 import { foldersAtom } from '../../../recoil/atom/design/foldersAtom';
+import { propertiesModalAtom } from '../../../recoil/atom/modals/propertiesModalAtom';
 import { renameModalAtom } from '../../../recoil/atom/modals/renameModalAtom';
 import { addWindow } from '../../../recoil/atom/windowsAtom';
 import { socket } from '../../../socket/socket';
@@ -16,6 +17,7 @@ const FolderContextMenu = (props)=>{
     const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
 
     const [renameModal,setRenameModal] = useRecoilState(renameModalAtom);
+    const [propertiesModal,setPropertiesModal] = useRecoilState(propertiesModalAtom);
 
 
     const [filesState,setFilesState] = useRecoilState(filesAtom);
@@ -63,6 +65,10 @@ const FolderContextMenu = (props)=>{
         });
     }
 
+    const handleProperties = ()=>{
+        setPropertiesModal({targetData});
+    }
+
     useEffect(()=>{
         const splitPath = contextMenu.path.split("/");
         const name = splitPath.pop()
@@ -81,7 +87,7 @@ const FolderContextMenu = (props)=>{
             <hr/>
             <div className="contextmodal-items" onClick={handleDelete}>Delete</div>
             <hr/>
-            <div className="contextmodal-items">Properties</div>
+            <div className="contextmodal-items" onClick={handleProperties}>Properties</div>
         </div>
     );
 }

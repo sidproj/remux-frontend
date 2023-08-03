@@ -29,7 +29,9 @@ const Terminal = (props)=>{
     const checkExit = ()=>{
         if(ref.command.toLowerCase() == "exit" ){
             props.exit();
+            return true;
         }
+        return false;
     }
 
 
@@ -55,7 +57,7 @@ const Terminal = (props)=>{
     useEffect(()=>{
         document.getElementById("terminal-input"+props.id).onkeydown=(e)=>{
             if(e.key == "Enter"){
-                checkExit();
+                if (checkExit()) return;
                 if(isClear()){
                     document.getElementById("terminal-history"+props.id).innerHTML='';
                 }
@@ -82,7 +84,6 @@ const Terminal = (props)=>{
         <div className="terminal-container">
             <div id={"terminal"+props.id} className="terminal" onClick={handleClick}>
                 <div id={"terminal-history"+props.id} className="terminal-history">
-                    <div>sid@ubuntu:~$ ls</div>
                 </div>
                 <div className="terminal-input-container">
                     <div>{prompt}</div>

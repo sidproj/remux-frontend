@@ -1,0 +1,40 @@
+.pdf-container{
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    height: inherit;
+    width:inherit;
+}
+
+.pdf-container > *{
+    height: inherit;
+}
+
+.img-container{
+    background-color: rgb(76, 76, 76);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    height:inherit ;
+    width:inherit ;
+    object-fit: contain;
+}
+
+.img-container > img{
+    object-fit: contain;
+    width: calc(100% - 2em);
+    height: calc(100% - 5em);
+    margin: 1em;
+}
+
+.video-container{
+    background-color: rgb(161, 194, 204);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    height:inherit ;
+    width:inherit ;
+    object-fit: contain;
+}
+
+.video-container > video{
+    object-fit: contain;
+    width: calc(100% - 2em);
+    height: calc(100% - 5em);
+    margin: 1em;
+}
