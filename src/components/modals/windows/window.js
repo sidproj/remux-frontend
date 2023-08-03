@@ -16,6 +16,10 @@ import { terminalsAtom } from "../../../recoil/atom/design/terminalAtom";
 import { folderDataAtom } from "../../../recoil/atom/data/foldersModal";
 import { filesDataAtom } from "../../../recoil/atom/data/filesModal";
 import { removeTerminal,terminalsDataAtom } from "../../../recoil/atom/data/terminalModal";
+import ErrorModal from "../inturuptsModals/errorModal";
+import ImageModal from "../imageModal/imageModal";
+import AudioModal from "../audioModal/audioModal";
+import VideoModal from "../videoModal/videoModal";
 
 
 const Window = (props)=>{
@@ -41,6 +45,13 @@ const Window = (props)=>{
         width:props.displayConfig.width,
     };
 
+    const pdfDefaultStyle = {
+        top: 80,
+        left: 80,
+        height : "500px",
+        width: "800px",
+    }
+
 
     const maxStyle = {
         top:0,
@@ -50,7 +61,7 @@ const Window = (props)=>{
     }
 
     const minStyle = {
-        visibility: "hidden"
+        display:"none",
     }
 
     const handleStyle = ()=>{
@@ -64,6 +75,10 @@ const Window = (props)=>{
 
     const handleDisplayStateToUP = (e)=>{
         switch(props.contentType){
+            case "PDF":
+            case "IMG":
+            case "VIDEO":
+            case "AUDIO":
             case "FILE":changeDisplayStateToUP(setFilesState);break;
             case "FOLDER": changeDisplayStateToUP(setFoldersState);break;
             case "TERMINAL": changeDisplayStateToUP(setTerminalsState);break;
@@ -78,6 +93,10 @@ const Window = (props)=>{
 
     const handleDisplayStateToDown = (e)=>{
         switch(props.contentType){
+            case "PDF":
+            case "IMG":
+            case "VIDEO":
+            case "AUDIO":
             case "FILE":changeDisplayStateToDown(setFilesState);break;
             case "FOLDER": changeDisplayStateToDown(setFoldersState);break;
             case "TERMINAL": changeDisplayStateToDown(setTerminalsState);break;
@@ -93,13 +112,16 @@ const Window = (props)=>{
     //close any window
     const handleClose = () =>{
         switch(props.contentType){
-            case "FILE":removeWindow(props.id,setFilesState);break;
+            // case "PDF":
+            // case "IMG":
+            // case "FILE":removeWindow(props.id,setFilesState);break;
             case "FOLDER": removeWindow(props.id,setFoldersState);break;
             case "TERMINAL": {
                 removeTerminal(props.id,setTerminalsDataState);
                 removeWindow(props.id,setTerminalsState);
                 break;
             }
+            default:removeWindow(props.id,setFilesState);break;
         }
     }
 
@@ -121,13 +143,22 @@ const Window = (props)=>{
             case "FOLDER" :
                 return <FolderExplorer id={props.id} displayState={props.displayState}/>;
             case "FILE" : return <Editor id={props.id} />;
+            case "PDF" : return <ErrorModal id={props.id}/>;
+            case "IMG" : return <ImageModal id={props.id} />;
+            case "AUDIO" : return <AudioModal id={props.id}/>;
+            case "VIDEO" : return <VideoModal id={props.id}/>;
             case "TERMINAL" : return <Terminal id={props.id} exit={handleClose} displayState={props.displayState}/>;
         }
     }
 
     return (
         <div className="folder-explorer-window" 
-            style={handleStyle()}
+            // style={handleStyle()}
+            style={ 
+                ( props.contentType == "PDF" || props.contentType == "IMG" ) &&  props.displayState == "DEFAULT" ?
+                pdfDefaultStyle:
+                handleStyle()
+            }
             onClick={handleClick}
             id={props.id}
             key={props.id}

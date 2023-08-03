@@ -56,3 +56,8 @@
 .login-botton:hover{
     background-color: rgba(0, 0, 0, 0.450);
 }
+
+.login-error{
+    color:rgb(154, 14, 14);
+    font-size: large;
+}

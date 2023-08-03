@@ -22,19 +22,20 @@ import { folderDataAtom,addFolder, updatedChildren } from '../recoil/atom/data/f
 import { contextMenuAtom } from '../recoil/atom/design/contextMenuAtom';
 import RenameModal from './modals/inturuptsModals/renameModal';
 import { renameModalAtom } from '../recoil/atom/modals/renameModalAtom';
+import { propertiesModalAtom } from '../recoil/atom/modals/propertiesModalAtom';
+import PropertiesModal from './modals/inturuptsModals/propertiesModal';
+import ErrorModal from './modals/inturuptsModals/errorModal';
 
 const Desktop = ()=>{
 
     const navigate = useNavigate();
 
-    
-    // states for contextmenu
-    const [contextMenuConfig,setContextMenuConfig] = useState(null);
-    // end for contextmenu
 
     const [contextMenu,setContextMenu] = useRecoilState(contextMenuAtom);
 
-    const [renameModal,setRenameModal] = useRecoilState(renameModalAtom)
+    const [renameModal,setRenameModal] = useRecoilState(renameModalAtom);
+    const [errorModal,setErrorModal] = useState(null);
+    const [propertiesModal,setPropertiesModa] = useRecoilState(propertiesModalAtom);
 
     const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
 
@@ -54,7 +55,6 @@ const Desktop = ()=>{
 
         socket.on("load_desktop_response",(payload)=>{
             const data = payload.data;
-            console.log(payload);
             setDesktopPath(data.path);
             
             if(!Object.keys(folderDataState).includes(data.path)){
@@ -73,7 +73,6 @@ const Desktop = ()=>{
         });
 
         socket.on("load_dir_response",(payload)=>{
-            console.log(payload);
             updatedChildren(payload.path,[
                 ...payload.data.FOLDERS,
                 ...payload.data.FILES,
@@ -144,13 +143,20 @@ const Desktop = ()=>{
                 <WindowManager/>
                 <Sidebar/>
             </div>
+            {/* for display of contextMenu */}
             {
                 contextMenu &&
                 handleContextMenuDisplay()
             }
+            {/* for display of rename modal */}
             {
                 renameModal && <RenameModal/>
             }
+            {/* for display of propreties of files and folders */}
+            {
+                propertiesModal && <PropertiesModal/>
+            }
+            {/* <ErrorModal/> */}
         </div>
     );
 }

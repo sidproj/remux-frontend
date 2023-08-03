@@ -2,39 +2,57 @@ import { useRecoilState } from "recoil";
 import { addWindow } from "../../recoil/atom/windowsAtom";
 import { filesAtom } from "../../recoil/atom/design/filesAtom";
 import { addFile,filesDataAtom } from "../../recoil/atom/data/filesModal";
+import { useState } from "react";
 
 const SetingsItem = (props)=>{
 
     const [filesState,setFilesState] = useRecoilState(filesAtom);
     const [filesDataState,setFilesDataState] = useRecoilState(filesDataAtom);
 
+    const [runningWin,setRunningWin] = useState(false);
+
     const handleClick = (e)=>{
-        const displayConfig = filesState.newConfigs;
-        const displayState = "DEFAULT";
-        const contentType = "FILE";
+        console.log("settings");
+    }
 
-        addFile("untitled.txt",{text:`const msg = 'Hello world!';`},setFilesDataState);
+    const handleMouseEnter = ()=>{
+        setRunningWin(true);
+    }
 
-        addWindow("untitled.txt",{displayConfig,displayState,contentType},setFilesState);
+    const handleMouseLeave = ()=>{
+        setRunningWin(false);
     }
 
     const handleRunningWinDisplay = () => {
         const running = [];
+        running.push(
+            <div key="new">Open Setting</div>
+        );
         for(const key in filesState.windows){
             running.push(
                 <div key={key}>{key}</div>
             )
         }
+        return running;
     }
 
     return (
-        <div className='sidebar-item' title="Settings" onClick={handleClick}>
+        <div 
+            className='sidebar-item' 
+            title="Settings" 
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter} 
+            onMouseLeave={handleMouseLeave}
+        >
 
-            <div className="sidebar-win-running">
-                {
-                    handleRunningWinDisplay()
-                }
-            </div>
+            {
+                runningWin && 
+                (
+                    <div className="sidebar-win-running">
+                        { handleRunningWinDisplay()}
+                    </div>
+                )
+            }   
 
             <img className="sidebar-item-icon" src = {require("../../assets/images/settingIcon.png")}></img>
             {/* <div className="sidebar-item-name">Settings</div> */}

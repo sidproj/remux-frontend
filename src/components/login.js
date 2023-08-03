@@ -7,22 +7,14 @@ const Login = ()=>{
 
     const navigate = useNavigate();
 
-    const [username,setUsername] = useState("sidhraj");
-    const [password,setPassword] = useState("1234");
+    const [username,setUsername] = useState("sidhraj@gmail.com");
+    const [password,setPassword] = useState("test@1234");
 
     const credentailRef = useRef();
     credentailRef.username = username;
     credentailRef.password = password;
 
     useEffect(()=>{
-
-        socket.on("askcredentials",(value)=>{
-            socket.emit("login_request",
-                {
-                    username:credentailRef.username,
-                    password:credentailRef.password
-                });
-        })
 
         socket.on("loginResponse",(value)=>{
             if(!value.success){
@@ -44,6 +36,12 @@ const Login = ()=>{
         socket.disconnect();
         
         socket.connect();
+        console.log("here");
+        socket.emit("login_request",
+        {
+            email:credentailRef.username,
+            password:credentailRef.password
+        });
 
     }
 

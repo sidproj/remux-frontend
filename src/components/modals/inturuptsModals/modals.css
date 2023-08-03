@@ -74,7 +74,22 @@
     border-radius:0em 0em 0.5em 0em;
     background-color: rgb(113, 28, 28);
 }
+.only-btn{
+    border-radius: 0em 0em 0.5em 0.5em !important;
+}
 
 .modal-btn:hover{
     opacity: 0.8;
+}
+
+.properties-container{
+    width: 25em;
+    margin:1em;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.property-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

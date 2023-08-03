@@ -23,7 +23,7 @@ const WindowManager = (props)=>{
         //add folder expolorers in windows
         for(const key in foldersState.windows){    
 
-            if(foldersState.windows[key].displayState != "MIN"){
+            // if(foldersState.windows[key].displayState != "MIN"){
                 
                 const displayConfig = foldersState.windows[key].displayConfig;
                 const displayState = foldersState.windows[key].displayState;
@@ -37,13 +37,13 @@ const WindowManager = (props)=>{
                         contentType="FOLDER" 
                     />
                 );
-            }
+            // }
         }
 
         //add opened files in windows
         for(const key in filesState.windows){
 
-            if(filesState.windows[key].displayState != "MIN"){
+            // if(filesState.windows[key].displayState != "MIN"){
                 
                 const displayConfig = filesState.windows[key].displayConfig;
                 const displayState = filesState.windows[key].displayState;
@@ -52,7 +52,7 @@ const WindowManager = (props)=>{
                 const next = filesState.windows[key].next;
 
                 windows.push(
-                    <Window 
+                    <Window
                         id={key} 
                         key={key} 
                         displayConfig={displayConfig} 
@@ -60,16 +60,16 @@ const WindowManager = (props)=>{
                         children={children}
                         prev={prev}
                         next={next}
-                        contentType="FILE" 
+                        contentType={filesState.windows[key].contentType}
                     />
                 );
-            }
+            // }
         }
 
         //add opened terminals in windows
         for(const key in terminalsState.windows){
 
-            if(terminalsState.windows[key].displayState != "MIN"){
+            // if(terminalsState.windows[key].displayState != "MIN"){
 
                 const displayConfig = terminalsState.windows[key].displayConfig;
                 const displayState = terminalsState.windows[key].displayState;
@@ -89,7 +89,7 @@ const WindowManager = (props)=>{
                         contentType="TERMINAL"
                     />
                 );
-            }
+            // }
         }
 
         return windows;

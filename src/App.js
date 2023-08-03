@@ -7,6 +7,8 @@ import {
 
 import Login from './components/login';
 import Desktop from './components/desktop';
+import React from 'react';
+import Register from './components/register';
 
 //socket to backend
 // import { socket } from './socket/socket';
@@ -14,24 +16,16 @@ import Desktop from './components/desktop';
 
 function App() {
 
-  // const [isConnected,setIsConnected] = useState(socket.connected);
-
-  // useEffect(()=>{
-
-  //   const onConnect = ()=>{
-
-  //   }
-
-  // },[]);
-
   return(
-    <Router className="main">
-      <Routes>
-        <Route exact path="/" element={<Desktop/>}></Route>
-        <Route exact path="/login" element={<Login/>}></Route>
-        <Route exact path="/register" element={<Desktop/>}></Route>
-      </Routes>
-    </Router>
+    <React.StrictMode>
+      <Router className="main">
+        <Routes>
+          <Route exact path="/" element={<Desktop/>}></Route>
+          <Route exact path="/login" element={<Login/>}></Route>
+          <Route exact path="/register" element={<Register/>}></Route>
+        </Routes>
+      </Router>
+    </React.StrictMode>
   );
 
 }

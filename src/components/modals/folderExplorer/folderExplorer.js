@@ -33,7 +33,6 @@ const FolderExplorer = (props)=>{
     useEffect(()=>{
         console.log(props.id);
         socket.emit("load_dir_request",{path:folderDataState[props.id].data.path});
-
     },[]);
 
     const handleContextMenu = (e)=>{
