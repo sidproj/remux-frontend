@@ -36,7 +36,6 @@ const Login = ()=>{
         socket.disconnect();
         
         socket.connect();
-        console.log("here");
         socket.emit("login_request",
         {
             email:credentailRef.username,

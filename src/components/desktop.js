@@ -23,8 +23,10 @@ import { contextMenuAtom } from '../recoil/atom/design/contextMenuAtom';
 import RenameModal from './modals/inturuptsModals/renameModal';
 import { renameModalAtom } from '../recoil/atom/modals/renameModalAtom';
 import { propertiesModalAtom } from '../recoil/atom/modals/propertiesModalAtom';
+import { settingsModalAtom } from '../recoil/atom/modals/settingsModalAtom';
 import PropertiesModal from './modals/inturuptsModals/propertiesModal';
 import ErrorModal from './modals/inturuptsModals/errorModal';
+import SettingsModal from './modals/settingsModal/settingsModal';
 
 const Desktop = ()=>{
 
@@ -36,6 +38,7 @@ const Desktop = ()=>{
     const [renameModal,setRenameModal] = useRecoilState(renameModalAtom);
     const [errorModal,setErrorModal] = useState(null);
     const [propertiesModal,setPropertiesModa] = useRecoilState(propertiesModalAtom);
+    const [settingsModal,setSettingsModal] = useRecoilState(settingsModalAtom);
 
     const [folderDataState,setFolderDataState] = useRecoilState(folderDataAtom);
 
@@ -155,6 +158,9 @@ const Desktop = ()=>{
             {/* for display of propreties of files and folders */}
             {
                 propertiesModal && <PropertiesModal/>
+            }
+            {
+                settingsModal && <SettingsModal/>
             }
             {/* <ErrorModal/> */}
         </div>

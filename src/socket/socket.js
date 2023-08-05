@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const URL = "http://192.168.245.89:5000/user";
+const URL = "http://192.168.1.2:5000/user";
 
 export const socket = io(URL,{
     autoConnect:false,
